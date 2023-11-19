@@ -2,7 +2,90 @@
 {% block title %}Characters{% endblock %}
 
 {% block content%}
+<style>
+    .green {
+        color: green;
+    }
+
+    .red {
+        color: red;
+    }
+
+    /* Add this rule to make the text within the content block white */
+    .white-text {
+        color: white;
+    }
+</style>
 <form method="POST">
-    <h3 align="center">Enter Characters Name</h3>
+    <!-- Using CSS framework called Bootstrap -->
+    <h3 align="center">Enter Star Wars characters' names</h3>
+    <div class="row">
+        <div class="col">
+            <div class="form-group">
+                <label for="characterName1">Character Name 1</label>
+                <input type="text" class="form-control" id="characterName1" name="characterName1" placeholder="e.g Luke Skywalker">
+            </div>
+        </div>
+        <div class="col">
+            <div class="form-group">
+                <label for="characterName2">Character Name 2</label>
+                <input type="text" class="form-control" id="characterName2" name="characterName2" placeholder="e.g Darth Vader">
+            </div>
+        </div>
+    </div>
+    <br />
+    <button type="submit" class="btn btn-primary">Compare</button>
 </form>
-{% endblock %} 
+
+{% if char_info1 and char_info2 %}
+    <div class="row">
+        <div class="col">
+            <h4 class="white-text">Character 1 Information:</h4>
+            <!-- Display information for character 1 -->
+            <img src="{{ url_for('static', filename='images/' + char_info1['name'].lower().replace(' ', '') + '.webp') }}" alt="Character Image" width="500" height="500">
+            <table class="table">
+                <tr><td class="white-text">Name</td><td class="white-text">{{ char_info1['name'] }}</td></tr>
+                <tr><td class="white-text">Birth Year</td><td class="white-text">{{ char_info1['birth_year'] }}</td></tr>
+                <tr><td class="white-text">Eye Color</td><td class="white-text">{{ char_info1['eye_color'] }}</td></tr>
+                <tr><td class="white-text">Hair Color</td><td class="white-text">{{ char_info1['hair_color'] }}</td></tr>
+                <tr><td class="white-text">Height</td><td class="{{ 'green' if char_info1['height'] >= char_info2['height'] else 'red' }}">{{ char_info1['height'] }} cm</td></tr>
+                <tr><td class="white-text">Mass</td><td class="{{ 'green' if char_info1['mass'] >= char_info2['mass'] else 'red' }}">{{ char_info1['mass'] }} kg</td></tr>
+                <tr><td class="white-text">Skin Color</td><td class="white-text">{{ char_info1['skin_color'] }}</td></tr>
+                <tr><td class="white-text">Home World</td><td class="white-text">{{ char_info1['homeworld'] }}</td></tr>
+                <tr><td class="white-text">Films</td><td class="{{ 'green' if char_info1['films']|length >= char_info2['films']|length else 'red' }}">
+                    <ul>
+                        {% for film in char_info1['films'] %}
+                            <li>{{ film }}</li>
+                        {% endfor %}
+                    </ul>
+                </td></tr>
+            </table>
+        </div>
+        <div class="col">
+            <h4 class="white-text">Character 2 Information:</h4>
+            <!-- Display information for character 2 -->
+            <img src="{{ url_for('static', filename='images/' + char_info2['name'].lower().replace(' ', '') + '.webp') }}" alt="Character Image" width="500" height="500">
+            <table class="table">
+                <tr><td class="white-text">Name</td><td class="white-text">{{ char_info2['name'] }}</td></tr>
+                <tr><td class="white-text">Birth Year</td><td class="white-text">{{ char_info2['birth_year'] }}</td></tr>
+                <tr><td class="white-text">Eye Color</td><td class="white-text">{{ char_info2['eye_color'] }}</td></tr>
+                <tr><td class="white-text">Hair Color</td><td class="white-text">{{ char_info2['hair_color'] }}</td></tr>
+                <tr><td class="white-text">Height</td><td class="{{ 'green' if char_info2['height'] >= char_info1['height'] else 'red' }}">{{ char_info2['height'] if char_info2['height'] != -1 else 'unknown' }}{% if char_info2['height'] != -1 %} cm{% endif %}</td></tr>
+                <tr><td class="white-text">Mass</td><td class="{{ 'green' if char_info2['mass'] >= char_info1['mass'] else 'red' }}">{{ char_info2['mass'] if char_info2['mass'] != -1 else 'unknown' }}{% if char_info2['mass'] != -1 %} kg{% endif %}</td></tr>
+                <tr><td class="white-text">Skin Color</td><td class="white-text">{{ char_info2['skin_color'] }}</td></tr>
+                <tr><td class="white-text">Home World</td><td class="white-text">{{ char_info2['homeworld'] }}</td></tr>
+                <tr><td class="white-text">Films</td><td class="{{ 'green' if char_info2['films']|length >= char_info1['films']|length else 'red' }}">
+                    <ul>
+                        {% for film in char_info2['films'] %}
+                            <li>{{ film }}</li>
+                        {% endfor %}
+                    </ul>
+                </td></tr>
+            </table>
+        </div>
+    </div>
+{% endif %}
+
+
+
+{% endblock %}

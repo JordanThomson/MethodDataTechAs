@@ -2,5 +2,18 @@
 {% block title %}Home{% endblock %}
 
 {% block content%}
-<h1>This is the Comparison page </h1>
+<form method="POST">
+    <!--Using CSS framework called Bootstrap-->
+    <h3 align="center">Compare two Star Wars characters</h3>
+    <div class="form-group">
+        <label for="charaterName1">Charater Name</label>
+        <input type="characterName1" class="form-control" id="characterName1" name="characterName1" placeholder="e.g Luke Skywalker">
+    </div>
+    <div class="form-group">
+        <label for="charaterName2">Charater Name</label>
+        <input type="characterName2" class="form-control" id="characterName2" name="characterName2" placeholder="e.g C3P0">
+    </div>
+    <br />
+    <button type ="compare" class="btn btn-primary">Compare</button>
+</form>
 {% endblock %} 
